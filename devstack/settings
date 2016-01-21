@@ -1,0 +1,14 @@
+# Devstack settings
+
+enable_service kafka
+
+# Kafka installation directory
+KAFKA_DEST=${KAFKA_DEST:-/opt/stack/devstack-plugin-kafka}
+
+# Specify Kafka version
+KAFKA_VERSION=${KAFKA_VERSION:-0.9.0.1}
+KAFKA_BASEURL=${KAFKA_BASEURL:-http://www.us.apache.org/dist/kafka}
+
+# Specify Scala version
+SCALA_VERSION=${SCALA_VERSION:-2.10}
+SCALA_BASEURL=${SCALA_BASEURL:-http://www.scala-lang.org/files/archive}
