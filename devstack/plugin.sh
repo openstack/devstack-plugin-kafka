@@ -40,19 +40,21 @@ set +o xtrace
 
 # builds rpc transport url string
 function _get_rpc_transport_url {
+    local virtual_host=$1
     if [ -z "$RPC_USERNAME" ]; then
-        echo "amqp://$RPC_HOST:${RPC_PORT}/"
+        echo "amqp://$RPC_HOST:${RPC_PORT}/$virtual_host"
     else
-        echo "amqp://$RPC_USERNAME:$RPC_PASSWORD@$RPC_HOST:${RPC_PORT}/"
+        echo "amqp://$RPC_USERNAME:$RPC_PASSWORD@$RPC_HOST:${RPC_PORT}/$virtual_host"
     fi
 }
 
 # builds notify transport url string
 function _get_notify_transport_url {
+    local virtual_host=$1
     if [ -z "$NOTIFY_USERNAME" ]; then
-        echo "kafka://$NOTIFY_HOST:${NOTIFY_PORT}/"
+        echo "kafka://$NOTIFY_HOST:${NOTIFY_PORT}/$virtual_host"
     else
-        echo "kafka://$NOTIFY_USERNAME:$NOTIFY_PASSWORD@$NOTIFY_HOST:${NOTIFY_PORT}/"
+        echo "kafka://$NOTIFY_USERNAME:$NOTIFY_PASSWORD@$NOTIFY_HOST:${NOTIFY_PORT}/$virtual_host"
     fi
 }
 
@@ -366,8 +368,10 @@ if is_service_enabled kafka; then
         local package=$1
         local file=$2
         local section=${3:-DEFAULT}
-        iniset $file $section transport_url $(_get_rpc_transport_url)
-        iniset $file oslo_messaging_notifications transport_url $(_get_notify_transport_url)
+        local virtual_host=$4
+
+        iniset $file $section transport_url $(_get_rpc_transport_url "$virtual_host")
+        iniset $file oslo_messaging_notifications transport_url $(_get_notify_transport_url "$virtual_host")
     }
     function get_transport_url {
         # TODO (ansmith) introduce separate get_*_transport calls in devstak
@@ -376,9 +380,14 @@ if is_service_enabled kafka; then
     function get_notification_url {
         _get_notify_transport_url $@
     }
+    function rpc_backend_add_vhost {
+        return 0
+    }
+
     export -f iniset_rpc_backend
     export -f get_transport_url
     export -f get_notification_url
+    export -f rpc_backend_add_vhost
 fi
 
 # check for kafka service
