@@ -176,7 +176,7 @@ EOF
     # Create a listener for incoming connect to the router
     cat <<EOF | sudo tee --append $qdr_conf_file
 listener {
-    addr: 0.0.0.0
+    host: 0.0.0.0
     port: ${RPC_PORT}
     role: normal
 EOF
