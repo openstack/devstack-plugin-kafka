@@ -7,7 +7,7 @@ KAFKA_DEST=${KAFKA_DEST:-/opt/stack/devstack-plugin-kafka}
 
 # Specify Kafka version
 KAFKA_VERSION=${KAFKA_VERSION:-1.1.0}
-KAFKA_BASEURL=${KAFKA_BASEURL:-http://www.apache.org/dist/kafka}
+KAFKA_BASEURL=${KAFKA_BASEURL:-http://archive.apache.org/dist/kafka}
 
 # Specify Scala version
 SCALA_VERSION=${SCALA_VERSION:-2.12}
