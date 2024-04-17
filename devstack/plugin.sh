@@ -89,8 +89,6 @@ function _download_kafka {
 # driver
 function _install_kafka_python {
     # Install kafka client API
-    # TODO(ansmith) remove kafka-python library following switch
-    pip_install_gr kafka-python
     pip_install_gr confluent-kafka
 }
 
